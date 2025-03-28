@@ -41,15 +41,36 @@ function App() {
     })
     .then(retorno => retorno.json())
     .then(retorno_convertido => {
-      console.log(retorno_convertido);
+      
+      if(retorno_convertido.mensagem !== undefined) {
+        alert(retorno_convertido.mensagem);
+      } else{
+        setProdutos([...produtos, retorno_convertido]);
+        alert('Produto cadastrado com suecesso!')
+        limparFormulario();
+      }
+
     })
      
   }
 
+  //Limpar formulario
+  const limparFormulario = () => {
+    setObjProduto(produto);
+    setBtnCadastrar(true);
+  }
+
+
+  //Selecionar Produto
+  const selecionarProduto = (indice) => {
+    setObjProduto(produtos[indice]);
+    setBtnCadastrar(false);
+  }
+
   return (
     <div>
-      <Formulario botao={btnCadastrar} eventoTeclado={aoDigitar} cadastrar={cadastrar} />
-      <Tabela vetor={produtos} />
+      <Formulario botao={btnCadastrar} eventoTeclado={aoDigitar} cadastrar={cadastrar} obj={objProduto} cancelar={limparFormulario} />   
+      <Tabela vetor={produtos} selecionar={selecionarProduto} />
     </div>
   );
 }
